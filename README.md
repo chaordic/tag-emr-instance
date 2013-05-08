@@ -74,6 +74,21 @@ access. During `tag_emr_instance.sh` execution, it will download this
 credentials file, whose path should be provided using the
 `--aws-credentials`, and use AWS credentials stored in it.
 
+The minimal required action for this script to work is "ec2:CreateTags",
+so the following would be a usable IAM policy for a user who's only purpose
+it is to tag EMR instances:
+
+    {
+      "Statement": [
+        {
+          "Action": "ec2:CreateTags",
+          "Effect": "Allow",
+          "Resource": "*"
+        }
+      ]
+    }
+
+
 Bellow, there is an example of a credentials file  as expected by
 `tag_emr_instance.sh`:
 
