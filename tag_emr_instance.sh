@@ -77,7 +77,10 @@ chmod 755 $EC2_CREATE_TAGS
 # Instance Metadata Service
 INSTANCE_ID=$(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id)
 
+# Split a internal hostname like ip-10-44-191-108.eu-west-1.compute.internal
+# to figure out the region of this instance.
+REGION=$(hostname | cut -d. -f2)
 
 # Finally, call ec2-create-tags with the argument list constructed during
 # command line parsing.
-$EC2_CREATE_TAGS $INSTANCE_ID $TAG_ARGS
+$EC2_CREATE_TAGS --region $REGION $INSTANCE_ID $TAG_ARGS
