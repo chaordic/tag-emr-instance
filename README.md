@@ -7,7 +7,9 @@ What
 ====
 
 This is a short script that, once ran from inside a running EMR/EC2
-instance, it will [tag][] this instance with the provided tags.
+instance, it will [tag][] this instance with the provided tags and, when
+executed from a master node in a EMR cluster, [tag the whole EMR
+cluster][emr-tag] as well.
 
 If used as a [bootstrap action][], which is actually the original purpose of
 this script, resource (instance) tagging becomes a more robust and
@@ -15,11 +17,10 @@ passive process: every EMR instance created will apply its tags during
 initialization -- or just fail and thus abort its initialization.
 
 Contrasting with a reactive approach, where a process monitors the list
-of created Elastic MapReduce jobflows, enumerates its instances and than
+of created Elastic MapReduce jobflows, enumerates its instances and then
 tags those instances, the "bootstrap action approach" is supposedly more
 robust as every running instance **was** tagged before it became
 operational.
-
 
 Another nice thing about doing tagging as a [bootstrap action][] is that it
 decouples tagging support from the underlying framework used with EMR:
@@ -57,13 +58,16 @@ Notice:
 * Tags are provided as arguments to this [bootstrap action][].
 * The option `--aws-credentials` is used to provide the path to a script
   in S3 from where AWS access credentials will be read.
+* For EMR tagging to work the cluster should have been created with ["visible
+  to all users"][visibility] set as true. Another option is to have the same
+  credentials used to create the cluster provided with --aws-credentials.
 
 
 AWS credentials and security considerations
 ===========================================
 
-Internally, this script executes some EC2 scripts that require access to
-Amazon Web Services credentials (AWS_ACCESS_KEY, AWS_SECRET_KEY) being
+Internally, this script executes some EC2 and EMR scripts that require access
+to Amazon Web Services credentials (AWS_ACCESS_KEY, AWS_SECRET_KEY) being
 available as environment variables at execution time.
 
 Given that bootstrap scripts must be publicly accessible files in S3, it
@@ -87,6 +91,8 @@ it is to tag EMR instances:
         }
       ]
     }
+
+ *Untested* To be able to tag the EMR cluster (not instances), a similar policy, related to EMR, should be usable for the proveided credentials/IAM user as well.
 
 
 Bellow, there is an example of a credentials file  as expected by
@@ -124,3 +130,7 @@ https://github.com/chaordic/tag-emr-instance.
 [bootstrap action]: http://docs.aws.amazon.com/ElasticMapReduce/latest/DeveloperGuide/Bootstrap.html (Bootstrap Actions)
 
 [Instance Metadata Service]: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AESDG-chapter-instancedata.html
+
+[emr-tag]: http://docs.aws.amazon.com/ElasticMapReduce/latest/DeveloperGuide/emr-plan-tags.html
+
+[visibility]: https://docs.aws.amazon.com/ElasticMapReduce/latest/DeveloperGuide/emr-plan-access-iam.html
