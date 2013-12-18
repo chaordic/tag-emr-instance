@@ -92,7 +92,7 @@ it is to tag EMR instances:
       ]
     }
 
- *Untested* To be able to tag the EMR cluster (not instances), a similar policy, related to EMR, should be usable for the proveided credentials/IAM user as well.
+ **Unverified** To be able to tag the EMR cluster (not instances), a similar policy, related to EMR, should be usable for the proveided credentials/IAM user as well.
 
 
 Bellow, there is an example of a credentials file  as expected by
