@@ -111,6 +111,7 @@ $EC2_CREATE_TAGS --region=${REGION} ${INSTANCE_ID} $TAG_ARGS
 #
 # EMR tagging will only be performed once...
 # ... if and only if we are running inside a EMR cluster and...
+# (reference: http://docs.aws.amazon.com/ElasticMapReduce/latest/DeveloperGuide/Config_JSON.html)
 export EMR_JSON_INFO_HOME='/mnt/var/lib/info'
 export EMR_JOB_INFO_FILE="${EMR_JSON_INFO_HOME}/job-flow.json"
 export EMR_INSTANCE_INFO_FILE="${EMR_JSON_INFO_HOME}/instance.json"
